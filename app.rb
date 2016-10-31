@@ -14,13 +14,8 @@ get '/' do
   mysqladdr = consul.getaddress('blogs.mysql.service.consul.').to_s
   vaultaddr = consul.getaddress('production.vault.service.consul.').to_s
   vaulttoken = File.read '/etc/vaulttoken'
-  Vault.configure do |config|
-    config.address = "https://"+ vaultaddr +":8200"
-    config.token = vaulttoken
-    config.ssl_verify = false
-  end
-
-  mysqlsecret = Vault.logical.read("mysql/creds/readonly")
+  localvault = Vault::Client.new(address: "https://#{vaultaddr}:8200", token: vaulttoken, ssl_verify: false)
+  mysqlsecret = localvault.logical.read("mysql/creds/readonly")
 
   "Service discovery:
   Memcache is running on #{memcacheaddr}
