@@ -20,14 +20,15 @@ get '/' do
     config.ssl_verify = false
   end
 
+  mysqlsecret = Vault.logical.read("mysql/creds/readonly")
+
   "Service discovery:
   Memcache is running on #{memcacheaddr}
-  MySQL is running on #{mysqladdr}
+  MySQL is running on #{mysqladdr}, Username is #{mysqlsecret.data[:username]}
   Vault is running on #{vaultaddr}"
 
-  #mysqlsecret = Vault.logical.read("mysql/creds/readonly")
 end
 
-get '/test/' do
+get '/test' do
   "Yeah, I'm up"
 end
