@@ -16,11 +16,11 @@ get '/' do
   vaultaddr = consul.getaddress('production.vault.service.consul.').to_s
   "Vault is running on " + vaultaddr
   vaulttoken = File.read '/etc/vaulttoken'
-  vault = Vault.configure do |config|
+  Vault.configure do |config|
     config.address = "https://"+ vaultaddr +":8200"
     config.token = vaulttoken
     config.ssl_verify = false
   end
 
-  mysqlsecret = vault.logical.read("mysql/creds/readonly")
+  #mysqlsecret = Vault.logical.read("mysql/creds/readonly")
 end
