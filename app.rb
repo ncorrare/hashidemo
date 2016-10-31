@@ -6,15 +6,15 @@ require 'yaml'
 require 'vault'
 
 get '/' do
-  "Service discovery:"
+  'Service discovery:'
   consul = Resolv::DNS.new(:nameserver_port => [['localhost',8600]],
            :ndots => 1)
   memcacheaddr = consul.getaddress('blogs.memcached.service.consul.').to_s
-  "Memcache is running on " + memcacheaddr
+  "Memcache is running on #{memcacheaddr}"
   mysqladdr = consul.getaddress('blogs.mysql.service.consul.').to_s
-  "MySQL is running on " + mysqladdr
+  "MySQL is running on #{mysqladdr}"
   vaultaddr = consul.getaddress('production.vault.service.consul.').to_s
-  "Vault is running on " + vaultaddr
+  "Vault is running on #{vaultaddr}"
   vaulttoken = File.read '/etc/vaulttoken'
   Vault.configure do |config|
     config.address = "https://"+ vaultaddr +":8200"
