@@ -24,3 +24,7 @@ get '/' do
 
   #mysqlsecret = Vault.logical.read("mysql/creds/readonly")
 end
+
+get '/test/' do
+  "Yeah, I'm up"
+end
