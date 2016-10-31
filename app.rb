@@ -4,6 +4,8 @@ require 'tempfile'
 require 'net/http'
 require 'yaml'
 require 'vault'
+require 'resolv'
+
 
 get '/' do
   'Service discovery:'
