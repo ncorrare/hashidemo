@@ -5,6 +5,7 @@ require 'net/http'
 require 'yaml'
 require 'vault'
 require 'resolv'
+require 'mysql2'
 
 consul = Resolv::DNS.new(:nameserver_port => [['localhost',8600]],
            :ndots => 1)
