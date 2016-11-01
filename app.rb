@@ -14,16 +14,31 @@ vaultaddr = consul.getaddress('production.vault.service.consul.').to_s
 vaulttokenfile = File.read '/etc/vaulttoken'
 vaulttoken = vaulttokenfile.tr("\n","")
 localvault = Vault::Client.new(address: "https://#{vaultaddr}:8200", token: vaulttoken, ssl_verify: false)
-mysqlsecret = localvault.logical.read("mysql/creds/readonly")
+def getmysqlcreds
+  mysqlsecret = localvault.logical.read("mysql/creds/readonly")
+  return mysqlsecret
+end
 
+mysqlvars = getmysqlcreds()
 
 get '/' do
+  begin
+    client = Mysql2::Client.new(:host => mysqladdr, :username => mysqlvars.data[:username], :password => mysqlvars.data[:password])
+    mysqlstatus = client.query("SHOW STATUS")
+  rescue
+    puts "Asking for new credentials"
+    mysqlvars = getmysqlcreds()
+    client = Mysql2::Client.new(:host => mysqladdr, :username => mysqlvars.data[:username], :password => mysqlvars.data[:password])
+    mysqlstatus = client.query("SHOW STATUS")
+  end
   "Service discovery: <br />\n
   Memcache is running on #{memcacheaddr} <br />\n
   MySQL is running on #{mysqladdr} <br />\n 
   Vault is running on #{vaultaddr} <br />\n
   Credentials: <br />\n
-  Username is #{mysqlsecret.data[:username]}
+  Username is #{mysqlvars.data[:username]} <br />
+  Below you'll find some mysql data: <br />
+  #{mysqlstatus}
   "
 
 end
