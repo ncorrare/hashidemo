@@ -32,7 +32,7 @@ get '/' do
     client = Mysql2::Client.new(:host => mysqladdr, :username => mysqlvars.data[:username], :password => mysqlvars.data[:password])
     mysqlstatus = client.query("SHOW STATUS")
   end
-  erb :default, :locals => {:mysql => mysqladdr, :memcache => memcacheaddr, :vault => vaultaddr, :ary => mysqlstatus}
+  erb :default, :locals => {:mysql => mysqladdr, :mysqluser => mysqlvars.data[:username], :memcache => memcacheaddr, :vault => vaultaddr, :ary => mysqlstatus}
 
 end
 
