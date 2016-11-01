@@ -18,11 +18,11 @@ mysqlsecret = localvault.logical.read("mysql/creds/readonly")
 
 
 get '/' do
-  "Service discovery:\n
-  Memcache is running on #{memcacheaddr}\n
-  MySQL is running on #{mysqladdr},\n 
-  Vault is running on #{vaultaddr}\n
-  Credentials: \n
+  "Service discovery: <br />\n
+  Memcache is running on #{memcacheaddr} <br />\n
+  MySQL is running on #{mysqladdr} <br />\n 
+  Vault is running on #{vaultaddr} <br />\n
+  Credentials: <br />\n
   Username is #{mysqlsecret.data[:username]}
   "
 
