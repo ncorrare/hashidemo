@@ -14,12 +14,12 @@ vaultaddr = consul.getaddress('production.vault.service.consul.').to_s
 vaulttokenfile = File.read '/etc/vaulttoken'
 vaulttoken = vaulttokenfile.tr("\n","")
 localvault = Vault::Client.new(address: "https://#{vaultaddr}:8200", token: vaulttoken, ssl_verify: false)
-def getmysqlcreds
+def getmysqlcreds(localvault)
   mysqlsecret = localvault.logical.read("mysql/creds/readonly")
   return mysqlsecret
 end
 
-mysqlvars = getmysqlcreds()
+mysqlvars = getmysqlcreds(localvault)
 
 get '/' do
   begin
@@ -27,7 +27,7 @@ get '/' do
     mysqlstatus = client.query("SHOW STATUS")
   rescue
     puts "Asking for new credentials"
-    mysqlvars = getmysqlcreds()
+    mysqlvars = getmysqlcreds(localvault)
     client = Mysql2::Client.new(:host => mysqladdr, :username => mysqlvars.data[:username], :password => mysqlvars.data[:password])
     mysqlstatus = client.query("SHOW STATUS")
   end
