@@ -32,15 +32,7 @@ get '/' do
     client = Mysql2::Client.new(:host => mysqladdr, :username => mysqlvars.data[:username], :password => mysqlvars.data[:password])
     mysqlstatus = client.query("SHOW STATUS")
   end
-  "Service discovery: <br />\n
-  Memcache is running on #{memcacheaddr} <br />\n
-  MySQL is running on #{mysqladdr} <br />\n 
-  Vault is running on #{vaultaddr} <br />\n
-  Credentials: <br />\n
-  Username is #{mysqlvars.data[:username]} <br />
-  Below you'll find some mysql data: <br />
-  #{mysqlstatus}
-  "
+  erb :default, :locals => {:mysql => mysqladdr, :memcache => memcacheaddr, :vault => vaultaddr, :ary => mysqlstatus}
 
 end
 
