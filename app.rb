@@ -10,7 +10,7 @@ consul = Resolv::DNS.new(:nameserver_port => [['localhost',8600]],
            :ndots => 1)
 memcacheaddr = consul.getaddress('blogs.memcached.service.consul.').to_s
 mysqladdr = consul.getaddress('blogs.mysql.service.consul.').to_s
-vaultaddr = consul.getaddress('production.vault.service.consul.').to_s
+vaultaddr = consul.getaddress('vault.service.consul.').to_s
 vaulttokenfile = File.read '/etc/vaulttoken'
 vaulttoken = vaulttokenfile.tr("\n","")
 localvault = Vault::Client.new(address: "https://#{vaultaddr}:8200", token: vaulttoken, ssl_verify: false)
