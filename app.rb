@@ -14,15 +14,6 @@ vault = Vault::Client.new(address: "https://#{vaultaddr}:8200", token: vaulttoke
 secret = localvault.logical.read("secret/hello")
 
 get '/' do
-  begin
-    client = Mysql2::Client.new(:host => mysqladdr, :username => mysqlvars.data[:username], :password => mysqlvars.data[:password])
-    mysqlstatus = client.query("SHOW STATUS")
-  rescue
-    puts "Asking for new credentials"
-    mysqlvars = getmysqlcreds(localvault)
-    client = Mysql2::Client.new(:host => mysqladdr, :username => mysqlvars.data[:username], :password => mysqlvars.data[:password])
-    mysqlstatus = client.query("SHOW STATUS")
-  end
   erb :default, :locals => {:secret => secret.data[:key], :vault => vaultaddr}
 
 end
