@@ -28,7 +28,7 @@ else
 end
 
 vault = Vault::Client.new(address: vaultaddr, token: vaulttoken, ssl_verify: false)
-secret = localvault.logical.read("secret/hello")
+secret = vault.logical.read("secret/hello")
 
 get '/' do
   erb :default, :locals => {:secret => secret.data[:key], :vault => vaultaddr}
