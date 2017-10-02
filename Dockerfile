@@ -5,4 +5,5 @@ RUN curl -o /bin/tini https://github.com/krallin/tini/releases/download/v0.16.1/
 RUN unzip /tmp/vault.zip -d /bin
 RUN chmod +x /bin/vault
 RUN chmod +x /bin/tini
+RUN chmod +x /usr/src/app/start.sh
 CMD ["/bin/tini", "--", "/usr/src/app/start.sh"]
