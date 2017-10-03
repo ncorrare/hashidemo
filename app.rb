@@ -29,7 +29,7 @@ else
   ssl_verify = true
 end
 
-vault = Vault::Client.new(address: vaultaddr, token: vaulttoken, ssl_verify: false)
+vault = Vault::Client.new(address: vaultaddr, token: vaulttoken.gsub("\n", ''), ssl_verify: false)
 secret = vault.logical.read("secret/hello")
 
 get '/' do
