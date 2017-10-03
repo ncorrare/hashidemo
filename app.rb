@@ -19,7 +19,9 @@ if (defined?(ENV["VAULT_TOKEN"]))
   vaulttoken = ENV["VAULT_TOKEN"]
 else
 #No one gave me a token, I'll try to find one
-  vaulttoken = File.read("/tmp/vault-token")
+  fd = File.read("/tmp/vault-token")
+  vaulttoken = fd.gets
+
 end
 if (defined?(ENV["VAULT_SKIP_VERIFY"]))
   ssl_verify = false
