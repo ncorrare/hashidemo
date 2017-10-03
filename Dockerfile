@@ -6,4 +6,5 @@ RUN unzip /tmp/vault.zip -d /bin
 RUN chmod +x /bin/vault
 RUN chmod +x /bin/tini
 RUN chmod +x /usr/src/app/start.sh
+EXPOSE 4567/tcp
 ENTRYPOINT ["/usr/src/app/start.sh"]
