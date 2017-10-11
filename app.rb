@@ -6,6 +6,11 @@ require 'yaml'
 require 'vault'
 require 'resolv'
 
+configure do
+  set :bind, '0.0.0.0'
+end
+
+
 if (defined?(ENV["VAULT_ADDR"]))
   vaultaddr = ENV["VAULT_ADDR"]
 else
