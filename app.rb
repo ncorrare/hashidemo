@@ -42,7 +42,7 @@ end
 
 get '/secret/:id' do
   secretpath = params[:id]
-  secret = localvault.logical.read("secret/#{secretpath}")
+  secret = vault.logical.read("secret/#{secretpath}")
   erb :default, :locals => {:secret => secret.data[:key], :vault => vaultaddr}
 end
 
